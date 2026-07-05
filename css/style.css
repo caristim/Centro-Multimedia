@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #1a1a2e;
+  font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin: 0;
+}
+
+#app {
+  max-width: 1200px;
+  width: 100%;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+header p {
+  font-size: 1.2rem;
+  color: #aaa;
+  margin-top: 8px;
+}
+
+#services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 30px;
+  justify-content: center;
+}
+
+.service-card {
+  background: #2a2a4a;
+  border-radius: 24px;
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  border: 3px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  outline: none;
+}
+
+.service-card .icon {
+  font-size: 4rem;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.service-card .name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.service-card:focus-visible {
+  border-color: #ffd700;
+  box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.4);
+  transform: scale(1.04);
+  background: #3a3a5a;
+}
+
+.service-card:hover {
+  transform: scale(1.03);
+  background: #3a3a5a;
+}
+
+.service-card:active {
+  transform: scale(0.96);
+}
+
+.service-card[data-color] {
+  background: var(--card-bg, #2a2a4a);
+}
+
+@media (max-width: 600px) {
+  header h1 { font-size: 2rem; }
+  #services-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+  }
+  .service-card {
+    min-height: 140px;
+    padding: 20px 10px;
+  }
+  .service-card .icon { font-size: 3rem; }
+  .service-card .name { font-size: 1rem; }
+}
+
+.service-card {
+  -webkit-tap-highlight-color: transparent;
+}

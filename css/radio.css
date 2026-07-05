@@ -1,0 +1,180 @@
+.radio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: transparent;
+  margin-bottom: 20px;
+}
+
+.radio-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.back-btn {
+  background: none;
+  border: 2px solid #888;
+  color: #fff;
+  font-size: 2rem;
+  padding: 8px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: 0.2s;
+  line-height: 1;
+}
+.back-btn:hover,
+.back-btn:focus-visible {
+  background: #fff;
+  color: #1a1a2e;
+  border-color: #fff;
+  outline: none;
+}
+
+#stations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px 140px 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.station-item {
+  background: #2a2a4a;
+  padding: 18px 24px;
+  border-radius: 60px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  outline: none;
+}
+
+.station-item:focus-visible,
+.station-item:hover {
+  border-color: #f39c12;
+  background: #3a3a5a;
+  transform: scale(1.02);
+}
+
+.station-item .emoji {
+  font-size: 2rem;
+  width: 50px;
+  text-align: center;
+}
+.station-item .sname {
+  flex: 1;
+  font-weight: 500;
+}
+.station-item .status-badge {
+  font-size: 1.2rem;
+}
+
+.station-item.active {
+  border-color: #1db954;
+  background: #1a3a2a;
+}
+
+.player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #111128;
+  border-top: 2px solid #333;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.player-info {
+  flex: 2;
+  min-width: 120px;
+}
+.player-info #current-station-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f39c12;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.play-btn {
+  background: #f39c12;
+  border: none;
+  color: #1a1a2e;
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+}
+.play-btn:hover,
+.play-btn:focus-visible {
+  transform: scale(1.08);
+  background: #ffd700;
+  outline: none;
+}
+.play-btn:active {
+  transform: scale(0.94);
+}
+
+#volume-slider {
+  width: 100px;
+  height: 6px;
+  border-radius: 10px;
+  background: #444;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f39c12;
+  cursor: pointer;
+}
+#volume-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f39c12;
+  border: none;
+  cursor: pointer;
+}
+
+#volume-icon {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .radio-header h1 { font-size: 1.4rem; }
+  .station-item { padding: 14px 18px; font-size: 1rem; }
+  .station-item .emoji { font-size: 1.6rem; width: 40px; }
+  .player-bar { padding: 12px 16px; flex-direction: column; align-items: stretch; }
+  .player-controls { justify-content: center; }
+  #volume-slider { width: 120px; }
+}
