@@ -1,16 +1,18 @@
-const CACHE_NAME = 'streaming-launcher-v1';
+// sw.js
+const CACHE_NAME = 'streaming-launcher-v2';
 const ASSETS = [
   '/',
   '/index.html',
   '/radio.html',
+  '/manifest.json',
+  '/icon-192.svg',
+  '/icon-512.svg',
   '/css/style.css',
   '/css/radio.css',
   '/js/services.js',
   '/js/main.js',
   '/js/stations.js',
-  '/js/radio.js',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/js/radio.js'
 ];
 
 self.addEventListener('install', event => {
