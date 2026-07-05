@@ -1,6 +1,8 @@
+// js/main.js
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('services-grid');
 
+  // Renderizar tarjetas
   services.forEach((service, index) => {
     const card = document.createElement('div');
     card.className = 'service-card';
@@ -8,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.setAttribute('tabindex', '0');
     card.dataset.index = index;
     card.dataset.color = service.color;
+
     card.style.setProperty('--card-bg', service.color + '33');
 
     card.innerHTML = `
@@ -26,9 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.appendChild(card);
   });
 
+  // Enfocar primera tarjeta
   const firstCard = grid.querySelector('.service-card');
   if (firstCard) firstCard.focus();
 
+  // Navegación por teclado (flechas)
   const cards = Array.from(grid.querySelectorAll('.service-card'));
   document.addEventListener('keydown', (e) => {
     const active = document.activeElement;
@@ -44,6 +49,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     cards[newIndex].focus();
   });
+
+  // Registrar Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('SW registrado', reg))
+      .catch(err => console.log('SW falló', err));
+  }
 });
 
 function launchService(service) {
@@ -51,28 +63,22 @@ function launchService(service) {
   const isAndroid = /android/i.test(userAgent);
   const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 
-  // Primero probar deep link
   if (service.deepLink) {
     window.location.href = service.deepLink;
     setTimeout(() => fallbackToWeb(service), 2000);
     return;
   }
-
-  // Android app por intent
   if (isAndroid && service.androidApp) {
     const intentUrl = `intent://${service.androidApp}/#Intent;package=${service.androidApp};end`;
     window.location.href = intentUrl;
     setTimeout(() => fallbackToWeb(service), 2000);
     return;
   }
-
-  // iOS scheme
   if (isIOS && service.iosApp) {
     window.location.href = `${service.iosApp}://`;
     setTimeout(() => fallbackToWeb(service), 2000);
     return;
   }
-
   fallbackToWeb(service);
 }
 
@@ -82,11 +88,4 @@ function fallbackToWeb(service) {
   } else {
     alert(`No se puede abrir ${service.name}. Verifica la configuración.`);
   }
-}
-
-// Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-    .then(reg => console.log('SW registrado', reg))
-    .catch(err => console.log('SW falló', err));
 }
