@@ -6,24 +6,20 @@
   <title>Mis Radios</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/radio.css">
-  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <meta name="theme-color" content="#1a1a2e">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.svg">
+  <!-- hls.js para reproducir streams HLS (.m3u8) -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
   <main id="radio-app">
-    <!-- Cabecera con botón de regreso -->
     <header class="radio-header">
       <button id="back-button" class="back-btn" aria-label="Volver al inicio">⬅️</button>
       <h1>📻 Mis Radios</h1>
       <span></span>
     </header>
-
-    <!-- Lista de emisoras -->
     <section id="stations-list" role="list">
-      <!-- Se genera con JavaScript -->
+      <!-- Generado por JS -->
     </section>
-
-    <!-- Reproductor fijo abajo -->
     <div id="player-bar" class="player-bar">
       <div class="player-info">
         <span id="current-station-name">Selecciona una radio</span>
@@ -35,10 +31,7 @@
       </div>
     </div>
   </main>
-
-  <!-- Elemento de audio oculto -->
   <audio id="audio-player" preload="none"></audio>
-
   <script src="js/stations.js"></script>
   <script src="js/radio.js"></script>
 </body>
