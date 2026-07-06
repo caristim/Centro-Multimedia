@@ -2,7 +2,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('services-grid');
 
-  // Renderizar tarjetas
   services.forEach((service, index) => {
     const card = document.createElement('div');
     card.className = 'service-card';
@@ -29,11 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.appendChild(card);
   });
 
-  // Enfocar primera tarjeta
   const firstCard = grid.querySelector('.service-card');
   if (firstCard) firstCard.focus();
 
-  // Navegación por teclado (flechas)
   const cards = Array.from(grid.querySelectorAll('.service-card'));
   document.addEventListener('keydown', (e) => {
     const active = document.activeElement;
@@ -50,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     cards[newIndex].focus();
   });
 
-  // Registrar Service Worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
       .then(reg => console.log('SW registrado', reg))
@@ -63,29 +59,45 @@ function launchService(service) {
   const isAndroid = /android/i.test(userAgent);
   const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 
+  // Función auxiliar para redirigir a web (sin popup)
+  function goToWeb() {
+    if (service.webUrl) {
+      window.location.href = service.webUrl;
+    } else {
+      alert(`No se puede abrir ${service.name}. Verifica la configuración.`);
+    }
+  }
+
+  // 1. Intentar deep link primero (para apps nativas)
   if (service.deepLink) {
+    // Abrimos deep link, pero si falla, redirigimos a web después de 2s
     window.location.href = service.deepLink;
-    setTimeout(() => fallbackToWeb(service), 2000);
+    setTimeout(() => {
+      // Si la página sigue aquí, asumimos que el deep link no funcionó
+      goToWeb();
+    }, 2000);
     return;
   }
+
+  // 2. En Android, intentar intent con package name
   if (isAndroid && service.androidApp) {
     const intentUrl = `intent://${service.androidApp}/#Intent;package=${service.androidApp};end`;
     window.location.href = intentUrl;
-    setTimeout(() => fallbackToWeb(service), 2000);
+    setTimeout(() => {
+      goToWeb();
+    }, 2000);
     return;
   }
+
+  // 3. En iOS, usar URL scheme (ya cubierto por deepLink)
   if (isIOS && service.iosApp) {
     window.location.href = `${service.iosApp}://`;
-    setTimeout(() => fallbackToWeb(service), 2000);
+    setTimeout(() => {
+      goToWeb();
+    }, 2000);
     return;
   }
-  fallbackToWeb(service);
-}
 
-function fallbackToWeb(service) {
-  if (service.webUrl) {
-    window.open(service.webUrl, '_blank');
-  } else {
-    alert(`No se puede abrir ${service.name}. Verifica la configuración.`);
-  }
+  // 4. Fallback: web directa
+  goToWeb();
 }
