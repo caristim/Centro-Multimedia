@@ -11,15 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let isPlaying = false;
   let hls = null; // instancia de Hls
 
-  // ----------------- PROXY CORS (opcional) -----------------
-  // Si algunas radios requieren proxy, descomenta y usa:
+  // --- Proxy CORS (opcional, descomentar si se necesita) ---
   // const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
-  // function getStreamUrl(url) { return CORS_PROXY + url; }
-  // Para no usar proxy, simplemente devolvemos la url original.
-  function getStreamUrl(url) {
-    return url; // sin proxy por defecto
-  }
-  // ---------------------------------------------------------
+  // function getProxiedUrl(url) {
+  //   return CORS_PROXY + url;
+  // }
 
   function renderStations() {
     stationsList.innerHTML = '';
@@ -73,20 +69,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function playStation(station, itemElement) {
-    // Si es la misma estación, toggle play/pause
+    // Si es la misma estación, pausar/reanudar
     if (currentStation && currentStation.id === station.id) {
       togglePlayPause();
       return;
     }
 
-    // Detener cualquier reproducción anterior
-    stopCurrentPlayback();
+    // Detener reproducción anterior
+    audio.pause();
+    if (hls) {
+      hls.destroy();
+      hls = null;
+    }
 
-    const url = getStreamUrl(station.url);
+    const url = station.url; // Podrías aplicar proxy aquí: const url = getProxiedUrl(station.url);
+
+    // Detectar si es HLS (.m3u8)
     const isHls = url.includes('.m3u8') || url.includes('m3u8');
 
     if (isHls && window.Hls && Hls.isSupported()) {
-      // --- Reproducción con hls.js ---
       hls = new Hls({
         enableWorker: true,
         lowLatencyMode: true,
@@ -94,37 +95,35 @@ document.addEventListener('DOMContentLoaded', () => {
       hls.loadSource(url);
       hls.attachMedia(audio);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        audio.play()
-          .then(() => {
-            setPlayingState(station, itemElement);
-          })
-          .catch(err => {
-            console.warn('Error al reproducir HLS:', err);
-            alert(`No se pudo reproducir "${station.name}". Verifica la URL.`);
-            resetPlayerUI();
-          });
+        audio.play().then(() => {
+          setPlayingState(station, itemElement);
+        }).catch(e => {
+          console.warn('Error al reproducir HLS:', e);
+          alert(`No se pudo reproducir "${station.name}". Verifica la URL.`);
+          resetPlayerUI();
+        });
       });
       hls.on(Hls.Events.ERROR, (event, data) => {
         if (data.fatal) {
-          console.error('Error fatal en HLS:', data);
-          alert(`Error al reproducir "${station.name}". El stream podría no estar disponible.`);
+          console.error('Error fatal HLS:', data);
+          alert(`Error al reproducir "${station.name}".`);
           resetPlayerUI();
-          // Intentar recargar?
         }
       });
     } else {
-      // --- Reproducción directa con audio (MP3, AAC, etc.) ---
+      // Reproducción normal con <audio>
       audio.src = url;
       audio.load();
-      audio.play()
-        .then(() => {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
           setPlayingState(station, itemElement);
-        })
-        .catch(error => {
+        }).catch(error => {
           console.warn('Error al reproducir (CORS o formato):', error);
-          alert(`No se pudo reproducir "${station.name}". Puede ser por CORS o formato no soportado.`);
+          alert(`No se pudo reproducir "${station.name}". Verifica la URL.`);
           resetPlayerUI();
         });
+      }
     }
 
     // Actualizar UI
@@ -145,16 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
     currentNameSpan.textContent = station.name;
     playBtn.textContent = '⏸️';
     isPlaying = true;
-  }
-
-  function stopCurrentPlayback() {
-    // Detener hls si existe
-    if (hls) {
-      hls.destroy();
-      hls = null;
-    }
-    audio.pause();
-    audio.src = '';
   }
 
   function togglePlayPause() {
@@ -197,6 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function resetPlayerUI() {
     playBtn.textContent = '▶️';
     isPlaying = false;
+    if (hls) {
+      hls.destroy();
+      hls = null;
+    }
     document.querySelectorAll('.station-item').forEach(el => {
       const badge = el.querySelector('.status-badge');
       badge.style.opacity = '0';
@@ -205,10 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentStation) {
       currentNameSpan.textContent = `${currentStation.name} (detenida)`;
     }
-  }
-
-  function setPlayingState(station, item) {
-    // ya se actualiza en playStation
   }
 
   // Eventos del reproductor
@@ -221,10 +210,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   audio.addEventListener('ended', () => {
-    // Si el stream termina y estábamos reproduciendo, intentamos recargar
+    // Si es HLS, el final puede ser por error, intentamos recargar
     if (currentStation && isPlaying) {
       if (hls) {
-        // hls maneja el rebuffer automáticamente, no hacemos nada
+        // HLS ya maneja reconexión
       } else {
         audio.load();
         audio.play().catch(() => resetPlayerUI());
@@ -236,15 +225,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   audio.addEventListener('error', (e) => {
     console.warn('Error en el audio:', e);
-    // Si es un error de red, podemos intentar recargar
-    if (audio.error && audio.error.code === 4) {
-      alert('El stream no permite conexión desde esta página (CORS) o la URL no es válida.');
-    }
     resetPlayerUI();
   });
 
   document.getElementById('back-button').addEventListener('click', () => {
-    stopCurrentPlayback();
+    audio.pause();
+    if (hls) {
+      hls.destroy();
+      hls = null;
+    }
+    audio.src = '';
     window.location.href = 'index.html';
   });
 
