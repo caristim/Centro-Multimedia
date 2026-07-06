@@ -1,11 +1,11 @@
-// js/services.js
+// js/services.js - completo
 const services = [
   {
     id: 'antel',
     name: 'Antel TV',
     icon: '📺',
     color: '#0033a0',
-    webUrl: 'https://anteltv.com.uy',  // URL de login manual
+    webUrl: 'https://anteltv.com.uy',
     androidApp: null,
     iosApp: null,
     deepLink: null
