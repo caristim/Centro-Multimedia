@@ -18,7 +18,7 @@ const stations = [
   { id: 'radio16', name: 'Fenix CX40 AM1330', emoji: '📻', url: 'https://sp3.servidorrprivado.com:10906/;' },
   { id: 'radio18', name: 'America CX46 AM1450', emoji: '📻', url: 'https://america-2.nty.uy/stream' },
   { id: 'radio19', name: 'Difusora Rochense AM1260', emoji: '📻', url: 'https://rochense-1.nty.uy/' },
-  { id: 'radio20', name: 'Fortaleza AM1320 Rocha', emoji: '📻', url: 'http://server-uk1.radioseninternet.net:9304/stream/1' },
+  { id: 'radio20', name: 'Fortaleza AM1320 Rocha', emoji: '📻', url: 'https://server-usa2.radioseninternet.net/9304/stream' },
   { id: 'radio21', name: 'Nueva Radio Lascano AM1590', emoji: '📻', url: 'https://medios.ciudaddigital.com.uy:18050/NuevaRadio' },
   { id: 'radio22', name: 'Universo AM1480 Castillos', emoji: '📻', url: 'https://streamingraddios.online/proxy/universoam?mp=/stream' },
   { id: 'radio23', name: 'La Voz de Melo', emoji: '📻', url: 'http://stream.zeno.fm/fzc86k96yy8uv' },
