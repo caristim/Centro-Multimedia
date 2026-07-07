@@ -10,19 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let isPlaying = false;
   let hls = null;
 
-  // ========== PROXY CORS ACTIVADO ==========
-  const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
-  function getProxiedUrl(url) {
-    // Si la URL ya es del mismo dominio, no aplicar proxy
-    try {
-      const urlObj = new URL(url);
-      if (urlObj.hostname === window.location.hostname) return url;
-    } catch (e) {}
-    // Aplicar proxy a todas las demás
-    return CORS_PROXY + url;
-  }
-  // =========================================
-
   function renderStations() {
     stationsList.innerHTML = '';
     stations.forEach((station, index) => {
@@ -78,8 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     audio.pause();
     if (hls) { hls.destroy(); hls = null; }
 
-    // Usar proxy para todas las URLs
-    const url = getProxiedUrl(station.url);
+    const url = station.url;
     const isHls = url.includes('.m3u8') || url.includes('m3u8');
 
     if (isHls && window.Hls && Hls.isSupported()) {
