@@ -1,96 +1,185 @@
-const stations = [
-  // ---------- AM ----------
-  { id: 'radio1',  name: 'Clarín CX2 AM580', emoji: '📻', url: 'https://radioclarin-zikoxweb.radioca.st/stream' },
-  { id: 'radio2',  name: 'Rural CX4 AM610', emoji: '📻', url: 'https://radiolatina.live/9206/stream' },
-  { id: 'radio3',  name: 'Sodre Clásica AM650', emoji: '📻', url: 'https://radios.iwstreaming.uy/8032/stream' },
-  { id: 'radio4',  name: 'Sarandí CX6 AM690', emoji: '📻', url: 'https://radiolatina.live:10977/sarandi' },
-  { id: 'radio5',  name: 'Oriental CX12 AM770', emoji: '📻', url: 'http://radiolatina.live:7906/1' },
-  { id: 'radio6',  name: 'El Espectador CX14 AM810', emoji: '📻', url: 'https://espectador-1.nty.uy' },
-  { id: 'radio7',  name: 'Carve CX16 AM850', emoji: '📻', url: 'https://streamingcasazorrilla.innovanexo.com:8000/radiocarve850.mp3' },
-  { id: 'radio8',  name: 'Sport CX18 AM890', emoji: '📻', url: 'https://alba-uy-sport890-sport890.stream.mediatiquestream.com/index.m3u8' },
-  { id: 'radio9',  name: 'Montecarlo CX20 AM930', emoji: '📻', url: 'https://streamingcasazorrilla.innovanexo.com:8000/montecarlo.mp3' },
-  { id: 'radio10', name: 'Universal CX22 AM970', emoji: '📻', url: 'https://970universal-3.nty.uy/' },
-  { id: 'radio11', name: 'Carve Deportiva CX24 AM1010', emoji: '📻', url: 'https://icecast13.innovanexo.com:9000/carvedeportiva.mp3' },
-  { id: 'radio12', name: 'Uruguay CX26 AM1050', emoji: '📻', url: 'https://radios.iwstreaming.uy/8036/stream' },
-  { id: 'radio13', name: 'Nacional CX30 AM1130', emoji: '📻', url: 'https://stream.rcast.net/73479' },
-  { id: 'radio14', name: 'Radiomundo CX32 AM1170', emoji: '📻', url: 'http://ep1.enperspectiva.net:8000/radio.mp4' },
-  { id: 'radio15', name: 'Centenario CX36 AM1250', emoji: '📻', url: 'https://rfm.radio.netgate.com.uy:8443/centenario' },
-  { id: 'radio16', name: 'Fenix CX40 AM1330', emoji: '📻', url: 'https://sp3.servidorrprivado.com/8070/' },
-  { id: 'radio17', name: 'La R AM1410', emoji: '📻', url: 'https://stream5.305stream.com/6162/' },
-  { id: 'radio18', name: 'America CX46 AM1450', emoji: '📻', url: 'https://america-2.nty.uy/stream' },
-  { id: 'radio19', name: 'Difusora Rochense AM1260', emoji: '📻', url: 'https://rochense-1.nty.uy/' },
-  { id: 'radio20', name: 'Fortaleza AM1320 Rocha', emoji: '📻', url: 'http://server-uk1.radioseninternet.net:9304/stream/1' },
-  { id: 'radio21', name: 'Nueva Radio Lascano AM1590', emoji: '📻', url: 'https://medios.ciudaddigital.com.uy:18050/NuevaRadio' },
-  { id: 'radio22', name: 'Universo AM1480 Castillos', emoji: '📻', url: 'https://streamingraddios.online/proxy/universoam?mp=/stream' },
-  { id: 'radio23', name: 'La Voz de Melo', emoji: '📻', url: 'http://stream.zeno.fm/fzc86k96yy8uv' },
-  { id: 'radio24', name: 'Difusora Treinta y Tres AM1390', emoji: '📻', url: 'https://server-usa2.radioseninternet.net/8132/stream' },
-  { id: 'radio25', name: 'Colonia AM550', emoji: '📻', url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIA_ADP.aac' },
-  { id: 'radio26', name: 'Acuarela AM1520 Melo', emoji: '📻', url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIA_ADP.aac' },
-  { id: 'radio27', name: 'Cristal AM1470 Las Piedras', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8126/CristalAM' },
-  { id: 'radio28', name: 'Arapey AM1450 Artigas', emoji: '📻', url: 'http://emisiones.com.uy:8085/arapey' },
-  { id: 'radio29', name: 'Tacuarebó AM1280', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8114/TacuaremboAM' },
-  { id: 'radio30', name: 'Difusora Soriano AM1210', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8094/DifusoraSoriano' },
-  { id: 'radio31', name: 'Radio Durazno AM1430', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8038/DuraznoAM' },
-  { id: 'radio32', name: 'El Libertador AM1210', emoji: '📻', url: 'http://s4.viastreaming.net:7200/stream.mp3' },
-  { id: 'radio33', name: 'Radio Zorrilla AM1400 Tacuarembó', emoji: '📻', url: 'http://server-uk1.radioseninternet.net:9312/' },
-  { id: 'radio34', name: 'Radio Paysandú AM1240', emoji: '📻', url: 'https://streamingv2.shoutcast.com/radio-paysandu-cw35' },
-  { id: 'radio35', name: 'RBC Piriápolis AM1210', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8058/RbcAM' },
-  { id: 'radio36', name: 'Continental', emoji: '📻', url: 'https://edge02.radiohdvivo.com/stream/continental' },
-  { id: 'radio37', name: 'Radio 10', emoji: '📻', url: 'https://radio10.stweb.tv/radio10/live/playlist.m3u8' },
-  { id: 'radio38', name: 'Mitre', emoji: '📻', url: 'https://24443.live.streamtheworld.com/AM790_56.mp3' },
-  { id: 'radio39', name: 'Nacional (Argentina)', emoji: '📻', url: 'http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad1' },
-  { id: 'radio40', name: 'Del Plata (AM)', emoji: '📻', url: 'http://181.119.157.98:8800/amdelplata.mp3' },
-  { id: 'radio41', name: 'Splendid', emoji: '📻', url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/AM990AAC.aac' },
+document.addEventListener('DOMContentLoaded', () => {
+  const stationsList = document.getElementById('stations-list');
+  const audio = document.getElementById('audio-player');
+  const playBtn = document.getElementById('play-btn');
+  const volumeSlider = document.getElementById('volume-slider');
+  const volumeIcon = document.getElementById('volume-icon');
+  const currentNameSpan = document.getElementById('current-station-name');
 
-  // ---------- FM ----------
-  { id: 'radio42', name: 'CHUI FM87.9 Chui', emoji: '🎵', url: 'https://stm11.xcast.com.br:11288/stream' },
-  { id: 'radio43', name: 'Cadena de la Costa FM88.3 La Paloma', emoji: '🎵', url: 'https://s3.netradiofm.com/p/6112/stream' },
-  { id: 'radio44', name: 'Atlántica FM89.3 Chuy', emoji: '🎵', url: 'https://atlanticafm.radioca.st/stream' },
-  { id: 'radio45', name: 'Acuario FM94.9 Rocha', emoji: '🎵', url: 'https://radio25-zikoxstream.radioca.st/stream' },
-  { id: 'radio46', name: 'Conquistador FM97.3 Treinta y Tres', emoji: '🎵', url: 'https://tune.tunzilla.com/http://198.204.234.10:8143/stream/' },
-  { id: 'radio47', name: 'La Paloma FM102.1', emoji: '🎵', url: 'https://stream.radioinfo.ar/p/6112/' },
-  { id: 'radio48', name: 'Coronilla FM102.3', emoji: '🎵', url: 'https://streaming01.shockmedia.com.ar/9184/stream' },
-  { id: 'radio49', name: 'Esteña FM103.1 Castillos', emoji: '🎵', url: 'https://stream.radiopro.uy/listen/estena/estena' },
-  { id: 'radio50', name: 'Vida FM104.7 La Paloma', emoji: '🎵', url: 'http://usa15.ciudaddigital.com.uy:8048/VidaFM' },
-  { id: 'radio51', name: 'Nueva Onda FM105.3 Chuy', emoji: '🎵', url: 'https://stream-176.zeno.fm/mz1dytxe2wzuv' },
-  { id: 'radio52', name: 'Onda Marina FM106.3 La Paloma', emoji: '🎵', url: 'https://marina-2.nty.uy/' },
-  { id: 'radio53', name: 'América FM107.5 Santa Vitoria', emoji: '🎵', url: 'http://stm1.aovivodigital.com.br:10676/test.aac' },
-  { id: 'radio54', name: 'La Costa FM88.3', emoji: '🎵', url: 'https://streaming3.hostingmontevideo.com:8074/stream' },
-  { id: 'radio55', name: 'Del Molino FM89.3', emoji: '🎵', url: 'http://149.202.198.86:8915/' },
-  { id: 'radio56', name: 'Activa FM89.9 Rivera', emoji: '🎵', url: 'https://radios.iwstreaming.uy/8010/stream' },
-  { id: 'radio57', name: 'Radio Cinco FM89.7 Trinidad', emoji: '🎵', url: 'http://emisiones.com.uy:8084/cinco.mp3' },
-  { id: 'radio58', name: 'Oldies FM90.3', emoji: '🎵', url: 'http://51.15.152.81:8085/stream/1' },
-  { id: 'radio59', name: 'Futura FM91.1', emoji: '🎵', url: 'http://radios-uy.cdn.nedmedia.io/radios/uy/futura.m3u8' },
-  { id: 'radio60', name: 'Urbana FM92.5', emoji: '🎵', url: 'http://streamingsc.urbana.com.uy:8000/' },
-  { id: 'radio61', name: 'Inolvidable FM93.1', emoji: '🎵', url: 'http://stream.zenolive.com/6m1ba7yt3vduv' },
-  { id: 'radio62', name: 'Concierto FM95.1', emoji: '🎵', url: 'http://195.154.56.114:7026/stream' },
-  { id: 'radio63', name: 'Treinta y Tres FM94.3', emoji: '🎵', url: 'http://server-uk1.radioseninternetuy.com:8138/stream' },
-  { id: 'radio64', name: 'City FM95.1 Durazno', emoji: '🎵', url: 'http://usa15.ciudaddigital.com.uy:8030/CityFM' },
-  { id: 'radio65', name: 'Del Plata FM95.5', emoji: '🎵', url: 'http://radios-mp3-uy.cdn.nedmedia.io/uy-delplata.mp3' },
-  { id: 'radio66', name: 'Alfa FM96.3', emoji: '🎵', url: 'http://radioonline.netgate.com.uy:8000/alfafm' },
-  { id: 'radio67', name: 'Visión FM96.5 Fray Bentos', emoji: '🎵', url: 'http://emisiones.com.uy:8108/vision' },
-  { id: 'radio68', name: 'Babel FM97.1', emoji: '🎵', url: 'http://radiosrnu.com:9340/stream' },
-  { id: 'radio69', name: 'Diamante FM98.7', emoji: '🎵', url: 'http://qwcast.com:9870/diamante' },
-  { id: 'radio70', name: 'Federal FM99.1', emoji: '🎵', url: 'http://usa15.ciudaddigital.com.uy:8076/FederalFM' },
-  { id: 'radio71', name: 'Del Sol FM99.5', emoji: '🎵', url: 'http://radio.dl.uy:9950/radio' },
-  { id: 'radio72', name: 'Digital FM100.1', emoji: '🎵', url: 'http://96.127.183.74:8510/stream' },
-  { id: 'radio73', name: 'Aire FM100.3', emoji: '🎵', url: 'http://195.154.182.222:27125/stream' },
-  { id: 'radio74', name: 'Extremo FM100.9 Salto', emoji: '🎵', url: 'http://192.240.99.146:8111/bour' },
-  { id: 'radio75', name: 'Aspen FM103.5', emoji: '🎵', url: 'http://67.222.24.62:9300/' },
-  { id: 'radio76', name: 'Latina FM103.7', emoji: '🎵', url: 'https://medios.ciudaddigital.com.uy:18168/LatinaFM' },
-  { id: 'radio77', name: 'Hit FM', emoji: '🎵', url: 'https://hit-1.nty.uy/stream' },
-  { id: 'radio78', name: 'Metrópolis FM', emoji: '🎵', url: 'https://metropolis-web-2.nty.uy/' },
-  { id: 'radio79', name: 'Azul FM101.9', emoji: '🎵', url: 'https://azul-3.nty.uy/' },
-  { id: 'radio80', name: 'Océano FM93.9', emoji: '🎵', url: 'https://oceano-2.nty.uy/netradio/listen.mp3' },
-  { id: 'radio81', name: 'Radiocero FM104.3', emoji: '🎵', url: 'https://radiolatina.live:10966/stream' },
-  { id: 'radio82', name: 'Galaxia FM105.9', emoji: '🎵', url: 'http://node-31.zeno.fm/bf4gt1pem0quv' },
+  let currentStation = null;
+  let isPlaying = false;
+  let hls = null;
 
-  // ---------- Internacionales ----------
-  { id: 'radio83', name: 'CBN Florianópolis', emoji: '🌎', url: 'https://20843.live.streamtheworld.com/CBN_FLO.mp3' },
-  { id: 'radio84', name: 'Gaucha POA', emoji: '🌎', url: 'https://1132747t.ha.azioncdn.net/primary/gaucha_rbs.sdp/playlist.m3u8' },
-  { id: 'radio85', name: 'Guaiba POA', emoji: '🌎', url: 'https://radio.saopaulo01.com.br:10827/stream' },
-  { id: 'radio86', name: 'Pampa POA', emoji: '🌎', url: 'http://cast4.audiostream.com.br:8653/mp3' },
-  { id: 'radio87', name: 'Jovem Pan Florianópolis', emoji: '🌎', url: 'http://wz5.dnip.com.br/jfloripa/jfloripa.stream/playlist.m3u8' },
-  { id: 'radio88', name: 'Exterior España', emoji: '🌎', url: 'https://rtvelivestream.akamaized.net/rtvesec/rne/rne_re_main.m3u8' },
-  { id: 'radio89', name: 'Radio Francia Internacional', emoji: '🌎', url: 'https://rfienespagnol64k.ice.infomaniak.ch/rfienespagnol-64.mp3' }
-];
+  // ========== PROXY CORS ACTIVADO ==========
+  const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+  function getProxiedUrl(url) {
+    // Si la URL ya es del mismo dominio, no aplicar proxy
+    try {
+      const urlObj = new URL(url);
+      if (urlObj.hostname === window.location.hostname) return url;
+    } catch (e) {}
+    // Aplicar proxy a todas las demás
+    return CORS_PROXY + url;
+  }
+  // =========================================
+
+  function renderStations() {
+    stationsList.innerHTML = '';
+    stations.forEach((station, index) => {
+      const item = document.createElement('div');
+      item.className = 'station-item';
+      item.setAttribute('role', 'listitem');
+      item.setAttribute('tabindex', '0');
+      item.dataset.index = index;
+      item.innerHTML = `
+        <span class="emoji">${station.emoji || '📡'}</span>
+        <span class="sname">${station.name}</span>
+        <span class="status-badge">▶️</span>
+      `;
+      const badge = item.querySelector('.status-badge');
+      badge.style.opacity = '0';
+
+      item.addEventListener('click', () => playStation(station, item));
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          playStation(station, item);
+        }
+      });
+      stationsList.appendChild(item);
+    });
+
+    const first = stationsList.querySelector('.station-item');
+    if (first) first.focus();
+
+    const items = Array.from(stationsList.querySelectorAll('.station-item'));
+    document.addEventListener('keydown', (e) => {
+      const active = document.activeElement;
+      if (!active || !active.classList.contains('station-item')) return;
+      const idx = items.indexOf(active);
+      let newIdx = idx;
+      if (e.key === 'ArrowDown') {
+        newIdx = (idx + 1) % items.length;
+        e.preventDefault();
+      } else if (e.key === 'ArrowUp') {
+        newIdx = (idx - 1 + items.length) % items.length;
+        e.preventDefault();
+      } else return;
+      items[newIdx].focus();
+    });
+  }
+
+  function playStation(station, itemElement) {
+    if (currentStation && currentStation.id === station.id) {
+      togglePlayPause();
+      return;
+    }
+
+    audio.pause();
+    if (hls) { hls.destroy(); hls = null; }
+
+    // Usar proxy para todas las URLs
+    const url = getProxiedUrl(station.url);
+    const isHls = url.includes('.m3u8') || url.includes('m3u8');
+
+    if (isHls && window.Hls && Hls.isSupported()) {
+      hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+      hls.loadSource(url);
+      hls.attachMedia(audio);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        audio.play().then(() => setPlayingState(station, itemElement))
+          .catch(e => { alert(`No se pudo reproducir "${station.name}".`); resetPlayerUI(); });
+      });
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        if (data.fatal) { alert(`Error al reproducir "${station.name}".`); resetPlayerUI(); }
+      });
+    } else {
+      audio.src = url;
+      audio.load();
+      audio.play().then(() => setPlayingState(station, itemElement))
+        .catch(e => { alert(`No se pudo reproducir "${station.name}".`); resetPlayerUI(); });
+    }
+
+    document.querySelectorAll('.station-item').forEach(el => {
+      el.classList.remove('active');
+      el.querySelector('.status-badge').style.opacity = '0';
+    });
+    if (itemElement) {
+      itemElement.classList.add('active');
+      const badge = itemElement.querySelector('.status-badge');
+      badge.style.opacity = '1';
+      badge.textContent = '🔊';
+    }
+    currentStation = station;
+    currentNameSpan.textContent = station.name;
+    playBtn.textContent = '⏸️';
+    isPlaying = true;
+  }
+
+  function togglePlayPause() {
+    if (!currentStation) {
+      const firstItem = stationsList.querySelector('.station-item');
+      if (firstItem) {
+        const idx = parseInt(firstItem.dataset.index);
+        playStation(stations[idx], firstItem);
+      }
+      return;
+    }
+    if (audio.paused) {
+      audio.play().then(() => {
+        playBtn.textContent = '⏸️';
+        isPlaying = true;
+        document.querySelectorAll('.station-item').forEach(el => {
+          if (el.classList.contains('active')) {
+            el.querySelector('.status-badge').textContent = '🔊';
+            el.querySelector('.status-badge').style.opacity = '1';
+          }
+        });
+        currentNameSpan.textContent = currentStation.name;
+      }).catch(e => console.warn('Error al reanudar:', e));
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶️';
+      isPlaying = false;
+      document.querySelectorAll('.station-item').forEach(el => {
+        if (el.classList.contains('active')) {
+          el.querySelector('.status-badge').textContent = '⏸️';
+          el.querySelector('.status-badge').style.opacity = '1';
+        }
+      });
+    }
+  }
+
+  function resetPlayerUI() {
+    playBtn.textContent = '▶️';
+    isPlaying = false;
+    if (hls) { hls.destroy(); hls = null; }
+    document.querySelectorAll('.station-item').forEach(el => {
+      el.querySelector('.status-badge').style.opacity = '0';
+      el.classList.remove('active');
+    });
+    if (currentStation) currentNameSpan.textContent = `${currentStation.name} (detenida)`;
+  }
+
+  playBtn.addEventListener('click', togglePlayPause);
+  volumeSlider.addEventListener('input', (e) => {
+    const vol = e.target.value / 100;
+    audio.volume = vol;
+    volumeIcon.textContent = vol === 0 ? '🔇' : (vol < 0.5 ? '🔉' : '🔊');
+  });
+  audio.addEventListener('ended', () => {
+    if (currentStation && isPlaying) {
+      if (!hls) { audio.load(); audio.play().catch(() => resetPlayerUI()); }
+    } else resetPlayerUI();
+  });
+  audio.addEventListener('error', (e) => { console.warn('Error en audio:', e); resetPlayerUI(); });
+  document.getElementById('back-button').addEventListener('click', () => {
+    audio.pause();
+    if (hls) { hls.destroy(); hls = null; }
+    audio.src = '';
+    window.location.href = 'index.html';
+  });
+
+  renderStations();
+  audio.volume = volumeSlider.value / 100;
+});
