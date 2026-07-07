@@ -15,7 +15,7 @@ const stations = [
   { id: 'radio13', name: 'Nacional CX30 AM1130', emoji: '📻', url: 'https://stream.rcast.net/73479' },
   { id: 'radio14', name: 'Radiomundo CX32 AM1170', emoji: '📻', url: 'https://stream1.enperspectiva.net:8443/radio.aac' },
   { id: 'radio15', name: 'Centenario CX36 AM1250', emoji: '📻', url: 'https://streamusa.netgate.com.uy/listen/centenario/centenario' },
-  { id: 'radio16', name: 'Fenix CX40 AM1330', emoji: '📻', url: 'https://sp3.servidorrprivado.com/8070/' },
+  { id: 'radio16', name: 'Fenix CX40 AM1330', emoji: '📻', url: 'https://sp3.servidorrprivado.com:10906/;' },
   { id: 'radio17', name: 'La R AM1410', emoji: '📻', url: 'https://stream5.305stream.com/6162/' },
   { id: 'radio18', name: 'America CX46 AM1450', emoji: '📻', url: 'https://america-2.nty.uy/stream' },
   { id: 'radio19', name: 'Difusora Rochense AM1260', emoji: '📻', url: 'https://rochense-1.nty.uy/' },
