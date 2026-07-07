@@ -1,4 +1,3 @@
-// js/stations.js
 const stations = [
   // ---------- AM ----------
   { id: 'radio1',  name: 'Clarín CX2 AM580', emoji: '📻', url: 'https://radioclarin-zikoxweb.radioca.st/stream' },
@@ -20,7 +19,7 @@ const stations = [
   { id: 'radio17', name: 'La R AM1410', emoji: '📻', url: 'https://stream5.305stream.com/6162/' },
   { id: 'radio18', name: 'America CX46 AM1450', emoji: '📻', url: 'https://america-2.nty.uy/stream' },
   { id: 'radio19', name: 'Difusora Rochense AM1260', emoji: '📻', url: 'https://rochense-1.nty.uy/' },
-  { id: 'radio20', name: 'Fortaleza AM1320 Rocha', emoji: '📻', url: 'http://server-uk1.radioseninternet.net:9304/' },
+  { id: 'radio20', name: 'Fortaleza AM1320 Rocha', emoji: '📻', url: 'http://server-uk1.radioseninternet.net:9304/stream/1' },
   { id: 'radio21', name: 'Nueva Radio Lascano AM1590', emoji: '📻', url: 'https://medios.ciudaddigital.com.uy:18050/NuevaRadio' },
   { id: 'radio22', name: 'Universo AM1480 Castillos', emoji: '📻', url: 'https://streamingraddios.online/proxy/universoam?mp=/stream' },
   { id: 'radio23', name: 'La Voz de Melo', emoji: '📻', url: 'http://stream.zeno.fm/fzc86k96yy8uv' },
@@ -36,16 +35,14 @@ const stations = [
   { id: 'radio33', name: 'Radio Zorrilla AM1400 Tacuarembó', emoji: '📻', url: 'http://server-uk1.radioseninternet.net:9312/' },
   { id: 'radio34', name: 'Radio Paysandú AM1240', emoji: '📻', url: 'https://streamingv2.shoutcast.com/radio-paysandu-cw35' },
   { id: 'radio35', name: 'RBC Piriápolis AM1210', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8058/RbcAM' },
-
-  // ---------- AM Argentina ----------
   { id: 'radio36', name: 'Continental', emoji: '📻', url: 'https://edge02.radiohdvivo.com/stream/continental' },
   { id: 'radio37', name: 'Radio 10', emoji: '📻', url: 'https://radio10.stweb.tv/radio10/live/playlist.m3u8' },
   { id: 'radio38', name: 'Mitre', emoji: '📻', url: 'https://24443.live.streamtheworld.com/AM790_56.mp3' },
   { id: 'radio39', name: 'Nacional (Argentina)', emoji: '📻', url: 'http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad1' },
-  { id: 'radio40', name: 'Del Plata', emoji: '📻', url: 'http://181.119.157.98:8800/amdelplata.mp3' },
+  { id: 'radio40', name: 'Del Plata (AM)', emoji: '📻', url: 'http://181.119.157.98:8800/amdelplata.mp3' },
   { id: 'radio41', name: 'Splendid', emoji: '📻', url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/AM990AAC.aac' },
 
-  // ---------- FM Uruguay ----------
+  // ---------- FM ----------
   { id: 'radio42', name: 'CHUI FM87.9 Chui', emoji: '🎵', url: 'https://stm11.xcast.com.br:11288/stream' },
   { id: 'radio43', name: 'Cadena de la Costa FM88.3 La Paloma', emoji: '🎵', url: 'https://s3.netradiofm.com/p/6112/stream' },
   { id: 'radio44', name: 'Atlántica FM89.3 Chuy', emoji: '🎵', url: 'https://atlanticafm.radioca.st/stream' },
@@ -62,7 +59,7 @@ const stations = [
   { id: 'radio55', name: 'Del Molino FM89.3', emoji: '🎵', url: 'http://149.202.198.86:8915/' },
   { id: 'radio56', name: 'Activa FM89.9 Rivera', emoji: '🎵', url: 'https://radios.iwstreaming.uy/8010/stream' },
   { id: 'radio57', name: 'Radio Cinco FM89.7 Trinidad', emoji: '🎵', url: 'http://emisiones.com.uy:8084/cinco.mp3' },
-  { id: 'radio58', name: 'Oldies FM90.3', emoji: '🎵', url: 'http://51.15.152.81:8085/' },
+  { id: 'radio58', name: 'Oldies FM90.3', emoji: '🎵', url: 'http://51.15.152.81:8085/stream/1' },
   { id: 'radio59', name: 'Futura FM91.1', emoji: '🎵', url: 'http://radios-uy.cdn.nedmedia.io/radios/uy/futura.m3u8' },
   { id: 'radio60', name: 'Urbana FM92.5', emoji: '🎵', url: 'http://streamingsc.urbana.com.uy:8000/' },
   { id: 'radio61', name: 'Inolvidable FM93.1', emoji: '🎵', url: 'http://stream.zenolive.com/6m1ba7yt3vduv' },
@@ -86,7 +83,7 @@ const stations = [
   { id: 'radio79', name: 'Azul FM101.9', emoji: '🎵', url: 'https://azul-3.nty.uy/' },
   { id: 'radio80', name: 'Océano FM93.9', emoji: '🎵', url: 'https://oceano-2.nty.uy/netradio/listen.mp3' },
   { id: 'radio81', name: 'Radiocero FM104.3', emoji: '🎵', url: 'https://radiolatina.live:10966/stream' },
-  { id: 'radio82', name: 'GALAXIA FM105.9', emoji: '🎵', url: 'http://node-31.zeno.fm/bf4gt1pem0quv' },
+  { id: 'radio82', name: 'Galaxia FM105.9', emoji: '🎵', url: 'http://node-31.zeno.fm/bf4gt1pem0quv' },
 
   // ---------- Internacionales ----------
   { id: 'radio83', name: 'CBN Florianópolis', emoji: '🌎', url: 'https://20843.live.streamtheworld.com/CBN_FLO.mp3' },
