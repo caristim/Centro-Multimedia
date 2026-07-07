@@ -48,7 +48,7 @@ const stations = [
   { id: 'radio45', name: 'Acuario FM94.9 Rocha', emoji: '🎵', url: 'https://radio25-zikoxstream.radioca.st/stream' },
   { id: 'radio46', name: 'Conquistador FM97.3 Treinta y Tres', emoji: '🎵', url: 'https://tune.tunzilla.com/http://198.204.234.10:8143/stream/' },
   { id: 'radio47', name: 'La Paloma FM102.1', emoji: '🎵', url: 'https://stream.radioinfo.ar/p/6112/' },
-  { id: 'radio48', name: 'Coronilla FM102.3', emoji: '🎵', url: 'https://streaming01.shockmedia.com.ar/9184/stream' },
+  { id: 'radio48', name: 'Coronilla FM102.3 Chuy', emoji: '🎵', url: 'https://streaming01.shockmedia.com.ar/9184/stream' },
   { id: 'radio49', name: 'Esteña FM103.1 Castillos', emoji: '🎵', url: 'https://stream.radiopro.uy/listen/estena/estena' },
   { id: 'radio50', name: 'Vida FM104.7 La Paloma', emoji: '🎵', url: 'http://usa15.ciudaddigital.com.uy:8048/VidaFM' },
   { id: 'radio51', name: 'Nueva Onda FM105.3 Chuy', emoji: '🎵', url: 'https://stream-176.zeno.fm/mz1dytxe2wzuv' },
@@ -85,7 +85,6 @@ const stations = [
   { id: 'radio82', name: 'Galaxia FM105.9', emoji: '🎵', url: 'http://node-31.zeno.fm/bf4gt1pem0quv' },
 
   // ---------- Internacionales ----------
-  { id: 'radio83', name: 'CBN Florianópolis', emoji: '🌎', url: 'https://20843.live.streamtheworld.com/CBN_FLO.mp3' },
   { id: 'radio84', name: 'Gaucha POA', emoji: '🌎', url: 'https://1132747t.ha.azioncdn.net/primary/gaucha_rbs.sdp/playlist.m3u8' },
   { id: 'radio85', name: 'Guaiba POA', emoji: '🌎', url: 'https://radio.saopaulo01.com.br:10827/stream' },
   { id: 'radio86', name: 'Pampa POA', emoji: '🌎', url: 'http://cast4.audiostream.com.br:8653/mp3' },
