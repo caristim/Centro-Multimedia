@@ -13,7 +13,7 @@ const stations = [
   { id: 'radio11', name: 'Carve Deportiva CX24 AM1010', emoji: '📻', url: 'https://icecast13.innovanexo.com:9000/carvedeportiva.mp3' },
   { id: 'radio12', name: 'Uruguay CX26 AM1050', emoji: '📻', url: 'https://radios.iwstreaming.uy/8036/stream' },
   { id: 'radio13', name: 'Nacional CX30 AM1130', emoji: '📻', url: 'https://stream.rcast.net/73479' },
-  { id: 'radio14', name: 'Radiomundo CX32 AM1170', emoji: '📻', url: 'http://ep1.enperspectiva.net:8000/radio.mp4' },
+  { id: 'radio14', name: 'Radiomundo CX32 AM1170', emoji: '📻', url: 'https://stream1.enperspectiva.net:8443/radio.aac' },
   { id: 'radio15', name: 'Centenario CX36 AM1250', emoji: '📻', url: 'https://rfm.radio.netgate.com.uy:8443/centenario' },
   { id: 'radio16', name: 'Fenix CX40 AM1330', emoji: '📻', url: 'https://sp3.servidorrprivado.com/8070/' },
   { id: 'radio17', name: 'La R AM1410', emoji: '📻', url: 'https://stream5.305stream.com/6162/' },
