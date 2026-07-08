@@ -1,18 +1,20 @@
-// sw.js
 const CACHE_NAME = 'streaming-launcher-v2';
 const ASSETS = [
   '/',
   '/index.html',
   '/radio.html',
+  '/tvbrasil.html',
   '/manifest.json',
   '/icon-192.svg',
   '/icon-512.svg',
   '/css/style.css',
   '/css/radio.css',
+  '/css/tvbrasil.css',
   '/js/services.js',
   '/js/main.js',
   '/js/stations.js',
-  '/js/radio.js'
+  '/js/radio.js',
+  '/js/tvbrasil.js'
 ];
 
 self.addEventListener('install', event => {
