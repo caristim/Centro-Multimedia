@@ -1,0 +1,84 @@
+.tv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: transparent;
+  margin-bottom: 20px;
+}
+
+.tv-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.back-btn {
+  background: none;
+  border: 2px solid #888;
+  color: #fff;
+  font-size: 2rem;
+  padding: 8px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: 0.2s;
+  line-height: 1;
+}
+.back-btn:hover,
+.back-btn:focus-visible {
+  background: #fff;
+  color: #1a1a2e;
+  border-color: #fff;
+  outline: none;
+}
+
+#channels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px 40px 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.channel-item {
+  background: #2a2a4a;
+  padding: 18px 24px;
+  border-radius: 60px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  outline: none;
+}
+
+.channel-item:focus-visible,
+.channel-item:hover {
+  border-color: #ffd700;
+  background: #3a3a5a;
+  transform: scale(1.02);
+}
+
+.channel-item .emoji {
+  font-size: 2rem;
+  width: 50px;
+  text-align: center;
+}
+.channel-item .cname {
+  flex: 1;
+  font-weight: 500;
+}
+.channel-item .badge {
+  font-size: 1.2rem;
+  color: #1db954;
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .tv-header h1 { font-size: 1.4rem; }
+  .channel-item { padding: 14px 18px; font-size: 1rem; }
+  .channel-item .emoji { font-size: 1.6rem; width: 40px; }
+}
