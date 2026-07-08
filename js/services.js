@@ -1,4 +1,3 @@
-// js/services.js - completo
 const services = [
   {
     id: 'antel',
@@ -46,6 +45,16 @@ const services = [
     icon: '📻',
     color: '#f39c12',
     webUrl: 'radio.html',
+    androidApp: null,
+    iosApp: null,
+    deepLink: null
+  },
+  {
+    id: 'tvbrasil',
+    name: 'TV Brasil',
+    icon: '🇧🇷',
+    color: '#009739',
+    webUrl: 'tvbrasil.html',
     androidApp: null,
     iosApp: null,
     deepLink: null
