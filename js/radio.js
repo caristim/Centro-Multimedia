@@ -10,16 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let isPlaying = false;
   let hls = null;
 
-  // ========== PROXY CORS ACTIVADO ==========
-  const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+  // ========== PROXY DESACTIVADO ==========
   function getProxiedUrl(url) {
-    try {
-      const urlObj = new URL(url);
-      if (urlObj.hostname === window.location.hostname) return url;
-    } catch (e) {}
-    return CORS_PROXY + url;
+    return url; // Devuelve la URL original sin modificar
   }
-  // =========================================
+  // ======================================
 
   function renderStations() {
     stationsList.innerHTML = '';
@@ -79,23 +74,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const url = getProxiedUrl(station.url);
     const isHls = url.includes('.m3u8') || url.includes('m3u8');
 
-    if (isHls && window.Hls && Hls.isSupported()) {
-      hls = new Hls({ enableWorker: true, lowLatencyMode: true });
-      hls.loadSource(url);
-      hls.attachMedia(audio);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+    function attemptPlay() {
+      if (isHls && window.Hls && Hls.isSupported()) {
+        hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+        hls.loadSource(url);
+        hls.attachMedia(audio);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          audio.play().then(() => setPlayingState(station, itemElement))
+            .catch(() => showError(station));
+        });
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) showError(station);
+        });
+      } else {
+        audio.src = url;
+        audio.load();
         audio.play().then(() => setPlayingState(station, itemElement))
-          .catch(e => { alert(`No se pudo reproducir "${station.name}".`); resetPlayerUI(); });
-      });
-      hls.on(Hls.Events.ERROR, (event, data) => {
-        if (data.fatal) { alert(`Error al reproducir "${station.name}".`); resetPlayerUI(); }
-      });
-    } else {
-      audio.src = url;
-      audio.load();
-      audio.play().then(() => setPlayingState(station, itemElement))
-        .catch(e => { alert(`No se pudo reproducir "${station.name}".`); resetPlayerUI(); });
+          .catch(() => showError(station));
+      }
     }
+
+    function showError(station) {
+      alert(`No se pudo reproducir "${station.name}". Verifica la URL o intenta más tarde.`);
+      resetPlayerUI();
+    }
+
+    attemptPlay();
 
     document.querySelectorAll('.station-item').forEach(el => {
       el.classList.remove('active');
@@ -158,6 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentStation) currentNameSpan.textContent = `${currentStation.name} (detenida)`;
   }
 
+  function setPlayingState(station, item) {
+    // Ya se maneja en playStation
+  }
+
   playBtn.addEventListener('click', togglePlayPause);
   volumeSlider.addEventListener('input', (e) => {
     const vol = e.target.value / 100;
@@ -169,7 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!hls) { audio.load(); audio.play().catch(() => resetPlayerUI()); }
     } else resetPlayerUI();
   });
-  audio.addEventListener('error', (e) => { console.warn('Error en audio:', e); resetPlayerUI(); });
+  audio.addEventListener('error', (e) => {
+    console.warn('Error en audio:', e);
+  });
   document.getElementById('back-button').addEventListener('click', () => {
     audio.pause();
     if (hls) { hls.destroy(); hls = null; }
