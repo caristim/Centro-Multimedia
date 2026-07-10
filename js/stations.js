@@ -25,7 +25,7 @@ const stations = [
   { id: 'radio24', name: 'Difusora Treinta y Tres AM1390', emoji: '📻', url: 'https://server-usa2.radioseninternet.net/8132/stream' },
   { id: 'radio25', name: 'Colonia AM550', emoji: '📻', url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIA_ADP.aac' },
   { id: 'radio26', name: 'Acuarela AM1520 Melo', emoji: '📻', url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIA_ADP.aac' },
-  { id: 'radio27', name: 'Cristal AM1470 Las Piedras', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8126/CristalAM' },
+  { id: 'radio27', name: 'Cristal AM1470 Las Piedras', emoji: '📻', url: 'https://medios.ciudaddigital.com.uy:18126/CristalAM?' },
   { id: 'radio28', name: 'Arapey AM1450 Artigas', emoji: '📻', url: 'http://emisiones.com.uy:8085/arapey' },
   { id: 'radio29', name: 'Tacuarebó AM1280', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8114/TacuaremboAM' },
   { id: 'radio30', name: 'Difusora Soriano AM1210', emoji: '📻', url: 'http://usa15.ciudaddigital.com.uy:8094/DifusoraSoriano' },
