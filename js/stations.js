@@ -4,7 +4,7 @@ const stations = [
   { id: 'radio2',  name: 'Rural CX4 AM610', emoji: '📻', url: 'https://radiolatina.live/9206/stream' },
   { id: 'radio3',  name: 'Sodre Clásica AM650', emoji: '📻', url: 'https://radios.iwstreaming.uy/8032/stream' },
   { id: 'radio4',  name: 'Sarandí CX6 AM690', emoji: '📻', url: 'https://radiolatina.live:10977/sarandi' },
-  { id: 'radio5',  name: 'Oriental CX12 AM770', emoji: '📻', url: 'http://radiolatina.live:7906/1' },
+  { id: 'radio5',  name: 'Oriental CX12 AM770', emoji: '📻', url: 'https://radiolatina.live/7906/stream' },
   { id: 'radio6',  name: 'El Espectador CX14 AM810', emoji: '📻', url: 'https://espectador-1.nty.uy' },
   { id: 'radio7',  name: 'Carve CX16 AM850', emoji: '📻', url: 'https://streamingcasazorrilla.innovanexo.com:8000/radiocarve850.mp3' },
   { id: 'radio8',  name: 'Sport CX18 AM890', emoji: '📻', url: 'https://alba-uy-sport890-sport890.stream.mediatiquestream.com/index.m3u8' },
