@@ -9,12 +9,49 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentStation = null;
   let isPlaying = false;
   let hls = null;
+  let attemptToken = 0; // evita que intentos viejos (de otra radio) sigan corriendo
 
-  // ========== PROXY DESACTIVADO ==========
-  function getProxiedUrl(url) {
-    return url; // Devuelve la URL original sin modificar
+  // ========== PROXY (opcional) ==========
+  // Si en algún momento desplegás tu propio proxy (por ejemplo un Cloudflare
+  // Worker, ver "cloudflare-worker-proxy.js.txt" incluido junto a este proyecto),
+  // pegá acá la URL base y se usará como último recurso cuando una radio no
+  // pueda reproducirse ni en su URL original ni en su versión https.
+  // Ejemplo: 'https://mi-proxy.mi-usuario.workers.dev/?url='
+  const PROXY_BASE = '';
+  // =======================================
+
+  const pageIsSecure = window.location.protocol === 'https:';
+
+  // Genera la lista de URLs candidatas a intentar, en orden, para una emisora.
+  function buildCandidateUrls(originalUrl) {
+    const candidates = [];
+    const isInsecure = originalUrl.startsWith('http://');
+
+    if (isInsecure && pageIsSecure) {
+      // La página es https y el stream es http: el navegador va a bloquear
+      // esto por "contenido mixto". Probamos primero la versión https del
+      // mismo servidor, que muchas veces sí funciona.
+      candidates.push({
+        url: 'https://' + originalUrl.slice('http://'.length),
+        upgraded: true
+      });
+      // Dejamos la original como intento de respaldo (funcionará si el
+      // usuario abre el archivo localmente o desde un sitio http).
+      candidates.push({ url: originalUrl, upgraded: false, insecure: true });
+    } else {
+      candidates.push({ url: originalUrl, upgraded: false });
+    }
+
+    if (PROXY_BASE) {
+      candidates.push({
+        url: PROXY_BASE + encodeURIComponent(originalUrl),
+        upgraded: false,
+        proxied: true
+      });
+    }
+
+    return candidates;
   }
-  // ======================================
 
   function renderStations() {
     stationsList.innerHTML = '';
@@ -68,53 +105,93 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const myToken = ++attemptToken;
+
     audio.pause();
     if (hls) { hls.destroy(); hls = null; }
 
-    const url = getProxiedUrl(station.url);
-    const isHls = url.includes('.m3u8') || url.includes('m3u8');
+    const candidates = buildCandidateUrls(station.url);
+    let candidateIndex = 0;
 
-    function attemptPlay() {
+    function showError(lastCandidate) {
+      if (myToken !== attemptToken) return; // el usuario ya cambió de radio
+      const wasInsecure = lastCandidate && lastCandidate.insecure;
+      const msg = wasInsecure
+        ? `No se pudo reproducir "${station.name}". El navegador bloqueó la conexión insegura (http) de esta emisora. El servidor de la radio no ofrece una versión https disponible.`
+        : `No se pudo reproducir "${station.name}". Verifica la URL o intenta más tarde.`;
+      alert(msg);
+      resetPlayerUI();
+    }
+
+    function tryNextCandidate() {
+      if (myToken !== attemptToken) return;
+      if (candidateIndex >= candidates.length) {
+        showError(candidates[candidates.length - 1]);
+        return;
+      }
+      const candidate = candidates[candidateIndex];
+      candidateIndex++;
+      attemptPlay(candidate);
+    }
+
+    function attemptPlay(candidate) {
+      const url = candidate.url;
+      const isHls = url.includes('.m3u8');
+
+      if (hls) { hls.destroy(); hls = null; }
+      audio.removeAttribute('src');
+
       if (isHls && window.Hls && Hls.isSupported()) {
         hls = new Hls({ enableWorker: true, lowLatencyMode: true });
         hls.loadSource(url);
         hls.attachMedia(audio);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          audio.play().then(() => setPlayingState(station, itemElement))
-            .catch(() => showError(station));
+          if (myToken !== attemptToken) return;
+          audio.play()
+            .then(() => onPlaySuccess(candidate))
+            .catch(() => tryNextCandidate());
         });
         hls.on(Hls.Events.ERROR, (event, data) => {
-          if (data.fatal) showError(station);
+          if (myToken !== attemptToken) return;
+          if (data.fatal) tryNextCandidate();
         });
+      } else if (isHls && audio.canPlayType('application/vnd.apple.mpegurl')) {
+        // Safari reproduce HLS de forma nativa, sin hls.js
+        audio.src = url;
+        audio.load();
+        audio.play()
+          .then(() => onPlaySuccess(candidate))
+          .catch(() => tryNextCandidate());
       } else {
         audio.src = url;
         audio.load();
-        audio.play().then(() => setPlayingState(station, itemElement))
-          .catch(() => showError(station));
+        audio.play()
+          .then(() => onPlaySuccess(candidate))
+          .catch(() => tryNextCandidate());
       }
     }
 
-    function showError(station) {
-      alert(`No se pudo reproducir "${station.name}". Verifica la URL o intenta más tarde.`);
-      resetPlayerUI();
+    function onPlaySuccess(candidate) {
+      if (myToken !== attemptToken) return;
+      setPlayingState(station, itemElement);
+
+      document.querySelectorAll('.station-item').forEach(el => {
+        el.classList.remove('active');
+        el.querySelector('.status-badge').style.opacity = '0';
+      });
+      if (itemElement) {
+        itemElement.classList.add('active');
+        const badge = itemElement.querySelector('.status-badge');
+        badge.style.opacity = '1';
+        badge.textContent = '🔊';
+      }
+      currentStation = station;
+      currentNameSpan.textContent = station.name;
+      playBtn.textContent = '⏸️';
+      isPlaying = true;
     }
 
-    attemptPlay();
-
-    document.querySelectorAll('.station-item').forEach(el => {
-      el.classList.remove('active');
-      el.querySelector('.status-badge').style.opacity = '0';
-    });
-    if (itemElement) {
-      itemElement.classList.add('active');
-      const badge = itemElement.querySelector('.status-badge');
-      badge.style.opacity = '1';
-      badge.textContent = '🔊';
-    }
-    currentStation = station;
-    currentNameSpan.textContent = station.name;
-    playBtn.textContent = '⏸️';
-    isPlaying = true;
+    tryNextCandidate();
   }
 
   function togglePlayPause() {
@@ -163,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setPlayingState(station, item) {
-    // Ya se maneja en playStation
+    // Ya se maneja en onPlaySuccess
   }
 
   playBtn.addEventListener('click', togglePlayPause);
