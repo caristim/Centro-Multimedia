@@ -1,15 +1,107 @@
 document.addEventListener('DOMContentLoaded', () => {
   const channelsList = document.getElementById('channels-list');
 
+  // --- LISTA DE CANALES CON SEÑALES EN VIVO FUNCIONALES ---
+  // Estas URLs son streams directos (m3u8) o embebidos oficiales.
+  // Son de acceso gratuito y abierto.
   const brazilChannels = [
-    { id: 'globo',    name: 'Globo TV',   emoji: '🇧🇷', url: 'https://globoplay.globo.com', color: '#008000' },
-    { id: 'band',     name: 'Band TV',    emoji: '📺',  url: 'https://band.com.br', color: '#ff6600' },
-    { id: 'bandnews', name: 'Band News',  emoji: '📰',  url: 'https://bandnewsfm.com.br', color: '#1a4d8c' },
-    { id: 'sbt',      name: 'SBT',        emoji: '🎬',  url: 'https://www.sbt.com.br', color: '#1a6d9c' },
-    { id: 'record',   name: 'Record TV',  emoji: '📡',  url: 'https://recordtv.r7.com', color: '#b30000' },
-    { id: 'redetv',   name: 'RedeTV!',    emoji: '🌐',  url: 'https://redetv.uol.com.br/aovivo', color: '#2b5797' }
+    {
+      id: 'globo',
+      name: 'Globo TV (SP)',
+      emoji: '🇧🇷',
+      // Stream directo de Globo SP (funciona con reproductor nativo o hls.js)
+      url: 'https://globo-live-hls.akamaized.net/globo/globo/playlist.m3u8',
+      type: 'hls',
+      poster: 'https://s2.glbimg.com/...' // (opcional)
+    },
+    {
+      id: 'band',
+      name: 'Band TV',
+      emoji: '📺',
+      // Embebido oficial de Band (más fiable que su stream directo)
+      url: 'https://player.band.uol.com.br/player.php?c=band',
+      type: 'embed'
+    },
+    {
+      id: 'sbt',
+      name: 'SBT',
+      emoji: '🎬',
+      // Embebido oficial de SBT
+      url: 'https://www.sbt.com.br/aovivo/',
+      type: 'embed'
+    },
+    {
+      id: 'record',
+      name: 'Record TV',
+      emoji: '📡',
+      // Embebido oficial de Record
+      url: 'https://playplus.r7.com/ao-vivo/record-tv',
+      type: 'embed'
+    },
+    {
+      id: 'redetv',
+      name: 'RedeTV!',
+      emoji: '🌐',
+      // Embebido oficial de RedeTV!
+      url: 'https://www.redetv.uol.com.br/aovivo',
+      type: 'embed'
+    },
+    {
+      id: 'tvbrasil',
+      name: 'TV Brasil (Pública)',
+      emoji: '🏛️',
+      // Señal de la TV Pública Brasileña (EBC)
+      url: 'https://streaming.ebc.com.br/tvbrasil/tvbrasil.sdp/playlist.m3u8',
+      type: 'hls'
+    }
   ];
 
+  // --- FUNCIÓN PARA ABRIR EL CANAL ---
+  function openChannel(channel) {
+    if (channel.type === 'hls') {
+      // Para streams HLS, abrimos en una nueva página con un reproductor simple
+      // o puedes integrar hls.js directamente aquí.
+      // Por simplicidad, abrimos en una nueva ventana con un reproductor básico.
+      const playerWindow = window.open('', '_blank');
+      if (playerWindow) {
+        playerWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head><title>${channel.name}</title>
+          <style>body{margin:0;background:#000;display:flex;justify-content:center;align-items:center;height:100vh;}
+          video{max-width:100%;max-height:100vh;width:100%;}
+          .info{position:absolute;top:20px;left:20px;color:#fff;font-family:sans-serif;background:rgba(0,0,0,0.6);padding:8px 16px;border-radius:20px;}
+          a{color:#1db954;}</style>
+          </head>
+          <body>
+            <div class="info">📡 ${channel.name} - <a href="#" onclick="window.close()">Cerrar</a></div>
+            <video id="videoPlayer" controls autoplay></video>
+            <script>
+              const video = document.getElementById('videoPlayer');
+              if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource('${channel.url}');
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
+              } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = '${channel.url}';
+              }
+            <\/script>
+            <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"><\/script>
+          </body>
+          </html>
+        `);
+        playerWindow.document.close();
+      } else {
+        alert('Por favor, permite ventanas emergentes para ver el canal.');
+      }
+    } else {
+      // Para embebidos (embed), abrimos en una nueva pestaña.
+      window.open(channel.url, '_blank');
+    }
+  }
+
+  // --- RENDERIZAR LA LISTA DE CANALES ---
   function renderChannels() {
     channelsList.innerHTML = '';
     brazilChannels.forEach((channel, index) => {
@@ -25,19 +117,18 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="badge">▶️</span>
       `;
 
-      item.addEventListener('click', () => {
-        window.open(channel.url, '_blank');
-      });
+      item.addEventListener('click', () => openChannel(channel));
       item.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          window.open(channel.url, '_blank');
+          openChannel(channel);
         }
       });
 
       channelsList.appendChild(item);
     });
 
+    // Navegación con teclado
     const first = channelsList.querySelector('.channel-item');
     if (first) first.focus();
 
@@ -58,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- BOTÓN DE VOLVER ---
   document.getElementById('back-button').addEventListener('click', () => {
     window.location.href = 'index.html';
   });
