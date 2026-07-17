@@ -10,34 +10,14 @@ const services = [
     deepLink: null
   },
   {
-    id: 'tvbrasil',
-    name: 'TV Brasil',
-    icon: '🇧🇷',
-    color: '#009739',
-    webUrl: 'tvbrasil.html',
-    androidApp: null,
-    iosApp: null,
-    deepLink: null
-  },
-  {
-    id: 'radio',
-    name: 'Mis Radios',
-    icon: '📻',
-    color: '#f39c12',
-    webUrl: 'radio.html',
-    androidApp: null,
-    iosApp: null,
-    deepLink: null
-  },
-  {
-    id: 'youtube',
-    name: 'YouTube',
-    icon: '▶️',
-    color: '#ff0000',
-    webUrl: 'https://www.youtube.com',
-    androidApp: 'com.google.android.youtube',
-    iosApp: 'youtube',
-    deepLink: 'youtube://'
+    id: 'netflix',
+    name: 'Netflix',
+    icon: '🎬',
+    color: '#e50914',
+    webUrl: 'https://www.netflix.com',
+    androidApp: 'com.netflix.mediaclient',
+    iosApp: 'nflx',
+    deepLink: 'netflix://'
   },
   {
     id: 'spotify',
@@ -50,13 +30,33 @@ const services = [
     deepLink: 'spotify://'
   },
   {
-    id: 'netflix',
-    name: 'Netflix',
-    icon: '🎬',
-    color: '#e50914',
-    webUrl: 'https://www.netflix.com',
-    androidApp: 'com.netflix.mediaclient',
-    iosApp: 'nflx',
-    deepLink: 'netflix://'
+    id: 'youtube',
+    name: 'YouTube',
+    icon: '▶️',
+    color: '#ff0000',
+    webUrl: 'https://www.youtube.com',
+    androidApp: 'com.google.android.youtube',
+    iosApp: 'youtube',
+    deepLink: 'youtube://'
+  },
+  {
+    id: 'radio',
+    name: 'Mis Radios',
+    icon: '📻',
+    color: '#f39c12',
+    webUrl: 'radio.html',
+    androidApp: null,
+    iosApp: null,
+    deepLink: null
+  },
+  {
+    id: 'tvbrasil',
+    name: 'TV Brasil',
+    icon: '🇧🇷',
+    color: '#009739',
+    webUrl: 'tvbrasil.html',
+    androidApp: null,
+    iosApp: null,
+    deepLink: null
   }
 ];
