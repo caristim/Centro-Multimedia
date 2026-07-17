@@ -1,45 +1,35 @@
-const CACHE_NAME = 'streaming-launcher-v2';
-const ASSETS = [
-  '/',
-  '/index.html',
-  '/radio.html',
-  '/tvbrasil.html',
-  '/manifest.json',
-  '/icon-192.svg',
-  '/icon-512.svg',
-  '/css/style.css',
-  '/css/radio.css',
-  '/css/tvbrasil.css',
-  '/js/services.js',
-  '/js/main.js',
-  '/js/stations.js',
-  '/js/radio.js',
-  '/js/tvbrasil.js'
-];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
-  );
-});
-
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
-      );
-    })
-  );
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
-      .catch(() => caches.match('/'))
-  );
-});
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mis Radios</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/radio.css">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.svg">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+  <main id="radio-app">
+    <header class="radio-header">
+      <button id="back-button" class="back-btn" aria-label="Volver al inicio">⬅️</button>
+      <h1>📻 Mis Radios</h1>
+      <span></span>
+    </header>
+    <section id="stations-list" role="list"></section>
+    <div id="player-bar" class="player-bar">
+      <div class="player-info">
+        <span id="current-station-name">Selecciona una radio</span>
+      </div>
+      <div class="player-controls">
+        <button id="play-btn" class="play-btn" aria-label="Reproducir">▶️</button>
+        <input type="range" id="volume-slider" min="0" max="100" value="80" aria-label="Volumen">
+        <span id="volume-icon">🔊</span>
+      </div>
+    </div>
+  </main>
+  <audio id="audio-player" preload="none"></audio>
+  <script src="js/stations.js"></script>
+  <script src="js/radio.js"></script>
+</body>
+</html>
