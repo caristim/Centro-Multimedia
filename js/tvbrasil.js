@@ -2,12 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const channelsList = document.getElementById('channels-list');
 
   const brazilChannels = [
-    { id: 'globo',    name: 'Globo TV',   emoji: '🇧🇷', url: 'http://45.190.28.50/GLOBO_HD/index.m3u8', color: '#008000' },
-    { id: 'band',     name: 'Band TV',    emoji: '📺',  url: 'http://45.190.28.50/BAND_HD/index.m3u8', color: '#ff6600' },
-    { id: 'bandnews', name: 'Band News',  emoji: '📰',  url: 'https://bandnewsfm.com.br', color: '#1a4d8c' },
-    { id: 'sbt',      name: 'SBT',        emoji: '🎬',  url: 'https://cdn.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/chunklist.m3u8', color: '#1a6d9c' },
-    { id: 'record',   name: 'Record TV',  emoji: '📡',  url: 'http://45.190.28.50/RECORD/index.m3u8', color: '#b30000' },
-    { id: 'redetv',   name: 'RedeTV!',    emoji: '🌐',  url: 'https://player.jmvstream.com/avj/qTr6LshWvckU3RnoBsXK8HzmQx4TrJ.m3u8', color: '#2b5797' }
+    { id: 'sbt',        name: 'SBT',          emoji: '🎬',  url: 'https://cdn.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/chunklist.m3u8', color: '#1a6d9c' },
+    { id: 'redetv',     name: 'RedeTV!',      emoji: '🌐',  url: 'https://redetv.uol.com.br/aovivo', color: '#2b5797' },
+    { id: 'band',       name: 'Band TV',      emoji: '📺',  url: 'http://45.190.28.50/BAND_HD/index.m3u8', color: '#ff6600' },
+    { id: 'record',     name: 'Record TV',    emoji: '📡',  url: 'http://45.190.28.50/RECORD/index.m3u8', color: '#b30000' },
+    { id: 'recordnews', name: 'Record News',  emoji: '📰',  url: 'http://45.162.64.114/RECORD_NEWS/index.m3u8', color: '#8b0000' },
+    { id: 'globo',      name: 'Globo TV',     emoji: '🇧🇷', url: 'http://45.190.28.50/GLOBO_HD/index.m3u8', color: '#008000' },
+    { id: 'globonews',  name: 'Globo News',   emoji: '📰',  url: 'http://79.127.238.228:14093/', color: '#1a4d8c' },
+    { id: 'cnn',        name: 'CNN',          emoji: '🌎',  url: 'https://d25usgadhphvwi.cloudfront.net/hls/stv-plus-640x360/playlist.m3u8', color: '#cc0000' }
   ];
 
   function renderChannels() {
