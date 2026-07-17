@@ -39,10 +39,13 @@ header p {
 }
 
 #services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 30px;
   justify-content: center;
+  overflow-x: auto;
+  padding: 4px 4px 14px;
 }
 
 .service-card {
@@ -59,6 +62,7 @@ header p {
   align-items: center;
   justify-content: center;
   min-height: 180px;
+  flex: 0 0 160px;
   outline: none;
 }
 
@@ -97,12 +101,13 @@ header p {
 @media (max-width: 600px) {
   header h1 { font-size: 2rem; }
   #services-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 16px;
+    justify-content: flex-start;
   }
   .service-card {
     min-height: 140px;
     padding: 20px 10px;
+    flex: 0 0 120px;
   }
   .service-card .icon { font-size: 3rem; }
   .service-card .name { font-size: 1rem; }
