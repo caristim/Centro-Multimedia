@@ -1,27 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Streaming Launcher</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.svg">
-  <link rel="apple-touch-icon" href="icon-192.svg">
-  <link rel="stylesheet" href="css/style.css">
-  <meta name="theme-color" content="#1a1a2e">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Multimedia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icons/icon-192.svg">
+    <meta name="theme-color" content="#1a1a1a">
 </head>
 <body>
-  <main id="app">
-    <header>
-      <h1>📡 Mis Servicios</h1>
-      <p>Selecciona tu plataforma favorita</p>
+    <header class="main-header">
+        <h1>Centro Multimedia</h1>
     </header>
-    <section id="services-grid" role="grid">
-      <!-- Las tarjetas se generan con JavaScript -->
-    </section>
-  </main>
-  <script src="js/services.js"></script>
-  <script src="js/main.js"></script>
+
+    <main class="container">
+        <div class="grid-container">
+            
+            <!-- 1. Antel TV -->
+            <a href="anteltv.html" class="card-link">
+                <div class="card">
+                    <img src="icons/icon-192.svg" alt="Antel TV">
+                    <h3>Antel TV</h3>
+                </div>
+            </a>
+
+            <!-- 2. Brasil TV -->
+            <a href="tvbrasil.html" class="card-link">
+                <div class="card">
+                    <img src="icons/icon-192.svg" alt="Brasil TV">
+                    <h3>Brasil TV</h3>
+                </div>
+            </a>
+
+            <!-- 3. Radios -->
+            <a href="radio.html" class="card-link">
+                <div class="card">
+                    <img src="icons/icon-192.svg" alt="Radios">
+                    <h3>Radios</h3>
+                </div>
+            </a>
+
+            <!-- 4. YouTube -->
+            <a href="https://www.youtube.com" target="_blank" class="card-link">
+                <div class="card">
+                    <img src="icons/icon-192.svg" alt="YouTube">
+                    <h3>YouTube</h3>
+                </div>
+            </a>
+
+            <!-- 5. Spotify -->
+            <a href="https://open.spotify.com" target="_blank" class="card-link">
+                <div class="card">
+                    <img src="icons/icon-192.svg" alt="Spotify">
+                    <h3>Spotify</h3>
+                </div>
+            </a>
+
+            <!-- 6. Netflix -->
+            <a href="https://www.netflix.com" target="_blank" class="card-link">
+                <div class="card">
+                    <img src="icons/icon-192.svg" alt="Netflix">
+                    <h3>Netflix</h3>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 Centro Multimedia</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito.', reg))
+                    .catch(err => console.error('Error al registrar el Service Worker.', err));
+            });
+        }
+    </script>
 </body>
 </html>
