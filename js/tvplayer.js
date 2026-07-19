@@ -13,14 +13,6 @@ function initTvChannels(channels) {
     let currentChannel = null;
     let hls = null;
     let attemptToken = 0; // evita que intentos viejos (de otro canal) sigan corriendo
-    let fallbackTab = null;
-
-    function closeFallbackTab() {
-      if (fallbackTab && !fallbackTab.closed) {
-        try { fallbackTab.close(); } catch (e) { /* ignore */ }
-      }
-      fallbackTab = null;
-    }
 
     // ========== PROXY (opcional) ==========
     // Si en algún momento desplegás tu propio proxy (por ejemplo un Cloudflare
@@ -40,12 +32,11 @@ function initTvChannels(channels) {
       if (isInsecure && pageIsSecure) {
         // La página es https y el stream es http: el navegador va a bloquear
         // esto por "contenido mixto". Probamos primero la versión https del
-        // mismo servidor, que muchas veces sí funciona.
+        // mismo servidor, que a veces funciona.
         candidates.push({
           url: 'https://' + originalUrl.slice('http://'.length),
           upgraded: true
         });
-        candidates.push({ url: originalUrl, upgraded: false, insecure: true });
       } else {
         candidates.push({ url: originalUrl, upgraded: false });
       }
@@ -120,22 +111,36 @@ function initTvChannels(channels) {
       }
     }
 
+    // Muestra, dentro de la barra del reproductor, un aviso con un botón para
+    // abrir el canal en una pestaña nueva. El click en ese botón es un gesto
+    // real del usuario, así que el navegador SIEMPRE lo deja abrir — a
+    // diferencia de intentar abrirlo solo por código, que es poco confiable.
+    function showOpenExternallyPrompt(channel, message) {
+      currentNameSpan.innerHTML = '';
+      const span = document.createElement('span');
+      span.textContent = message;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'open-external-btn';
+      btn.textContent = '🔗 Abrir en pestaña nueva';
+      btn.addEventListener('click', () => {
+        window.open(channel.url, '_blank');
+      });
+      currentNameSpan.appendChild(span);
+      currentNameSpan.appendChild(btn);
+      playerWrap.classList.add('has-error');
+    }
+
     function playChannel(channel, itemElement) {
       const myToken = ++attemptToken;
+      let hasStartedPlaying = false;
+      let mediaRecoverAttempts = 0;
+      let networkRecoverAttempts = 0;
 
       video.pause();
       if (hls) { hls.destroy(); hls = null; }
       video.removeAttribute('src');
       video.load();
-      closeFallbackTab();
-
-      // Abrimos una pestaña en blanco YA, dentro del mismo click del usuario.
-      // Así, si el reproductor embebido no puede con el canal (bloqueo por
-      // contenido mixto, códec no soportado, etc.), podemos navegarla al
-      // stream original como respaldo, sin que el navegador la bloquee como
-      // popup (los popups solo se permiten si se originan en un gesto del
-      // usuario, y aquí lo hacemos de entrada por las dudas).
-      try { fallbackTab = window.open('', '_blank'); } catch (e) { fallbackTab = null; }
 
       playerWrap.hidden = false;
       playerWrap.classList.remove('has-error');
@@ -145,21 +150,13 @@ function initTvChannels(channels) {
       const candidates = buildCandidateUrls(channel.url);
       let candidateIndex = 0;
 
-      function openFallbackTab() {
-        if (myToken !== attemptToken) return;
-        if (fallbackTab && !fallbackTab.closed) {
-          currentNameSpan.textContent = `"${channel.name}" no se pudo reproducir embebido (bloqueo del navegador o códec no soportado). Lo abrimos en una pestaña nueva.`;
-          fallbackTab.location.href = channel.url;
-        } else {
-          currentNameSpan.textContent = `No se pudo reproducir "${channel.name}" embebido, y el navegador bloqueó la pestaña de respaldo. Abrilo manualmente: ${channel.url}`;
-          playerWrap.classList.add('has-error');
-        }
-      }
-
       function tryNextCandidate() {
         if (myToken !== attemptToken) return;
         if (candidateIndex >= candidates.length) {
-          openFallbackTab();
+          showOpenExternallyPrompt(
+            channel,
+            `"${channel.name}" no se pudo reproducir embebido en este navegador (bloqueo de contenido inseguro o códec no soportado). `
+          );
           return;
         }
         const candidate = candidates[candidateIndex];
@@ -173,7 +170,6 @@ function initTvChannels(channels) {
 
         if (hls) { hls.destroy(); hls = null; }
         video.removeAttribute('src');
-        playerWrap.classList.remove('has-error');
 
         if (isHls && window.Hls && Hls.isSupported()) {
           hls = new Hls({ enableWorker: true, lowLatencyMode: true });
@@ -187,7 +183,31 @@ function initTvChannels(channels) {
           });
           hls.on(Hls.Events.ERROR, (event, data) => {
             if (myToken !== attemptToken) return;
-            if (data.fatal) tryNextCandidate();
+            if (!data.fatal) return;
+
+            if (!hasStartedPlaying) {
+              // Nunca llegó a reproducir con este candidato: pasamos al
+              // siguiente (o al botón de respaldo si no quedan más).
+              tryNextCandidate();
+              return;
+            }
+
+            // Ya se había visto/escuchado el canal y se cortó (fluctuación
+            // de señal, buffer). Intentamos recuperar sin reiniciar todo el
+            // flujo, para no mostrar "no se pudo reproducir" sobre algo que
+            // en realidad sí se estaba viendo.
+            if (data.type === Hls.ErrorTypes.MEDIA_ERROR && mediaRecoverAttempts < 2) {
+              mediaRecoverAttempts++;
+              try { hls.recoverMediaError(); return; } catch (e) { /* sigue abajo */ }
+            } else if (data.type === Hls.ErrorTypes.NETWORK_ERROR && networkRecoverAttempts < 2) {
+              networkRecoverAttempts++;
+              try { hls.startLoad(); return; } catch (e) { /* sigue abajo */ }
+            }
+
+            showOpenExternallyPrompt(
+              channel,
+              `La señal de "${channel.name}" se cortó y no se pudo recuperar. `
+            );
           });
         } else if (isHls && video.canPlayType('application/vnd.apple.mpegurl')) {
           // Safari e iOS reproducen HLS de forma nativa, sin hls.js
@@ -207,9 +227,10 @@ function initTvChannels(channels) {
 
       function onPlaySuccess() {
         if (myToken !== attemptToken) return;
-        closeFallbackTab();
+        hasStartedPlaying = true;
         currentChannel = channel;
         currentNameSpan.textContent = channel.name;
+        playerWrap.classList.remove('has-error');
         markActiveItem(itemElement);
       }
 
@@ -218,11 +239,11 @@ function initTvChannels(channels) {
 
     if (closePlayerBtn) {
       closePlayerBtn.addEventListener('click', () => {
+        attemptToken++; // invalida cualquier intento en curso
         video.pause();
         if (hls) { hls.destroy(); hls = null; }
         video.removeAttribute('src');
         video.load();
-        closeFallbackTab();
         playerWrap.hidden = true;
         playerWrap.classList.remove('has-error');
         currentChannel = null;
@@ -235,10 +256,10 @@ function initTvChannels(channels) {
     }
 
     document.getElementById('back-button').addEventListener('click', () => {
+      attemptToken++;
       video.pause();
       if (hls) { hls.destroy(); hls = null; }
       video.src = '';
-      closeFallbackTab();
       window.location.href = 'index.html';
     });
 
