@@ -20,6 +20,46 @@ const services = [
     deepLink: null
   },
   {
+    id: 'tvargentina',
+    name: 'TV Argentina',
+    icon: '🇦🇷',
+    color: '#75aadb',
+    webUrl: 'tvargentina.html',
+    androidApp: null,
+    iosApp: null,
+    deepLink: null
+  },
+  {
+    id: 'tvdeportes',
+    name: 'TV Deportes',
+    icon: '⚽',
+    color: '#ff8800',
+    webUrl: 'tvdeportes.html',
+    androidApp: null,
+    iosApp: null,
+    deepLink: null
+  },
+  {
+    id: 'tvcultural',
+    name: 'TV Cultural',
+    icon: '🌍',
+    color: '#8e44ad',
+    webUrl: 'tvcultural.html',
+    androidApp: null,
+    iosApp: null,
+    deepLink: null
+  },
+  {
+    id: 'tvinternacional',
+    name: 'TV Internacional',
+    icon: '🌐',
+    color: '#34495e',
+    webUrl: 'tvinternacional.html',
+    androidApp: null,
+    iosApp: null,
+    deepLink: null
+  },
+  {
     id: 'radio',
     name: 'Mis Radios',
     icon: '📻',
