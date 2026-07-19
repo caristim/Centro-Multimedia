@@ -13,6 +13,14 @@ function initTvChannels(channels) {
     let currentChannel = null;
     let hls = null;
     let attemptToken = 0; // evita que intentos viejos (de otro canal) sigan corriendo
+    let fallbackTab = null;
+
+    function closeFallbackTab() {
+      if (fallbackTab && !fallbackTab.closed) {
+        try { fallbackTab.close(); } catch (e) { /* ignore */ }
+      }
+      fallbackTab = null;
+    }
 
     // ========== PROXY (opcional) ==========
     // Si en algún momento desplegás tu propio proxy (por ejemplo un Cloudflare
@@ -119,28 +127,39 @@ function initTvChannels(channels) {
       if (hls) { hls.destroy(); hls = null; }
       video.removeAttribute('src');
       video.load();
+      closeFallbackTab();
+
+      // Abrimos una pestaña en blanco YA, dentro del mismo click del usuario.
+      // Así, si el reproductor embebido no puede con el canal (bloqueo por
+      // contenido mixto, códec no soportado, etc.), podemos navegarla al
+      // stream original como respaldo, sin que el navegador la bloquee como
+      // popup (los popups solo se permiten si se originan en un gesto del
+      // usuario, y aquí lo hacemos de entrada por las dudas).
+      try { fallbackTab = window.open('', '_blank'); } catch (e) { fallbackTab = null; }
 
       playerWrap.hidden = false;
+      playerWrap.classList.remove('has-error');
       currentNameSpan.textContent = `Cargando ${channel.name}...`;
       playerWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       const candidates = buildCandidateUrls(channel.url);
       let candidateIndex = 0;
 
-      function showError(lastCandidate) {
+      function openFallbackTab() {
         if (myToken !== attemptToken) return;
-        const wasInsecure = lastCandidate && lastCandidate.insecure;
-        const msg = wasInsecure
-          ? `No se pudo reproducir "${channel.name}". El navegador bloqueó la conexión insegura (http) de este canal y no hay una versión https disponible.`
-          : `No se pudo reproducir "${channel.name}". Verifica la URL o intenta más tarde.`;
-        currentNameSpan.textContent = msg;
-        playerWrap.classList.add('has-error');
+        if (fallbackTab && !fallbackTab.closed) {
+          currentNameSpan.textContent = `"${channel.name}" no se pudo reproducir embebido (bloqueo del navegador o códec no soportado). Lo abrimos en una pestaña nueva.`;
+          fallbackTab.location.href = channel.url;
+        } else {
+          currentNameSpan.textContent = `No se pudo reproducir "${channel.name}" embebido, y el navegador bloqueó la pestaña de respaldo. Abrilo manualmente: ${channel.url}`;
+          playerWrap.classList.add('has-error');
+        }
       }
 
       function tryNextCandidate() {
         if (myToken !== attemptToken) return;
         if (candidateIndex >= candidates.length) {
-          showError(candidates[candidates.length - 1]);
+          openFallbackTab();
           return;
         }
         const candidate = candidates[candidateIndex];
@@ -188,6 +207,7 @@ function initTvChannels(channels) {
 
       function onPlaySuccess() {
         if (myToken !== attemptToken) return;
+        closeFallbackTab();
         currentChannel = channel;
         currentNameSpan.textContent = channel.name;
         markActiveItem(itemElement);
@@ -202,6 +222,7 @@ function initTvChannels(channels) {
         if (hls) { hls.destroy(); hls = null; }
         video.removeAttribute('src');
         video.load();
+        closeFallbackTab();
         playerWrap.hidden = true;
         playerWrap.classList.remove('has-error');
         currentChannel = null;
@@ -217,6 +238,7 @@ function initTvChannels(channels) {
       video.pause();
       if (hls) { hls.destroy(); hls = null; }
       video.src = '';
+      closeFallbackTab();
       window.location.href = 'index.html';
     });
 
