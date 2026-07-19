@@ -39,19 +39,19 @@ header p {
 }
 
 #services-grid {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 16px;
   justify-content: center;
-  overflow-x: auto;
   padding: 4px 4px 14px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 .service-card {
   background: #2a2a4a;
-  border-radius: 24px;
-  padding: 30px 20px;
+  border-radius: 18px;
+  padding: 18px 10px;
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -61,19 +61,18 @@ header p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 180px;
-  flex: 0 0 160px;
+  min-height: 110px;
   outline: none;
 }
 
 .service-card .icon {
-  font-size: 4rem;
+  font-size: 2.5rem;
   line-height: 1;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .service-card .name {
-  font-size: 1.3rem;
+  font-size: 0.95rem;
   font-weight: 600;
   word-break: break-word;
 }
@@ -101,16 +100,16 @@ header p {
 @media (max-width: 600px) {
   header h1 { font-size: 2rem; }
   #services-grid {
-    gap: 16px;
-    justify-content: flex-start;
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    gap: 10px;
   }
   .service-card {
-    min-height: 140px;
-    padding: 20px 10px;
-    flex: 0 0 120px;
+    min-height: 90px;
+    padding: 12px 6px;
+    border-radius: 14px;
   }
-  .service-card .icon { font-size: 3rem; }
-  .service-card .name { font-size: 1rem; }
+  .service-card .icon { font-size: 2rem; margin-bottom: 6px; }
+  .service-card .name { font-size: 0.8rem; }
 }
 
 .service-card {
