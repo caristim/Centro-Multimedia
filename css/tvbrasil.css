@@ -59,11 +59,37 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
   background: #2a2a4a;
   padding: 10px 18px;
   border-radius: 0 0 16px 16px;
   margin-top: -6px;
   font-size: 1rem;
+}
+
+#current-channel-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.open-external-btn {
+  background: #1db954;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.open-external-btn:hover,
+.open-external-btn:focus-visible {
+  background: #17a34a;
+  outline: none;
 }
 
 .player-wrap.has-error .player-info-bar {
