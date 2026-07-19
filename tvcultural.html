@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/tvbrasil.css">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.svg">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
   <main id="tvcultural-app">
@@ -15,8 +16,16 @@
       <h1>🌍 TV Cultural</h1>
       <span></span>
     </header>
+    <div id="player-wrap" class="player-wrap" hidden>
+      <video id="tv-video" class="tv-video" controls playsinline></video>
+      <div class="player-info-bar">
+        <span id="current-channel-name">—</span>
+        <button id="close-player" class="close-player-btn" aria-label="Cerrar reproductor">✖️ Cerrar</button>
+      </div>
+    </div>
     <section id="channels-list" role="list"></section>
   </main>
+  <script src="js/tvplayer.js"></script>
   <script src="js/tvcultural.js"></script>
 </body>
 </html>
