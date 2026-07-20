@@ -30,6 +30,16 @@ const services = [
     deepLink: null
   },
   {
+    id: 'tvuruguay',
+    name: 'TV Uruguay',
+    icon: '🇺🇾',
+    color: '#0038a8',
+    webUrl: 'tvuruguay.html',
+    androidApp: null,
+    iosApp: null,
+    deepLink: null
+  },
+  {
     id: 'tvdeportes',
     name: 'TV Deportes',
     icon: '⚽',
