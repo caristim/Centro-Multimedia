@@ -121,6 +121,16 @@ function initTvChannels(channels) {
       let hasStartedPlaying = false;
       let mediaRecoverAttempts = 0;
       let networkRecoverAttempts = 0;
+      let loadTimeoutId = null;
+
+      const LOAD_TIMEOUT_MS = 12000; // si no arranca en 12s, dejamos de esperar
+
+      function clearLoadTimeout() {
+        if (loadTimeoutId) {
+          clearTimeout(loadTimeoutId);
+          loadTimeoutId = null;
+        }
+      }
 
       const isInsecureChannel = channel.url.startsWith('http://') && pageIsSecure;
 
@@ -149,12 +159,21 @@ function initTvChannels(channels) {
       currentNameSpan.textContent = `Cargando ${channel.name}...`;
       playerWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+      loadTimeoutId = setTimeout(() => {
+        if (myToken !== attemptToken || hasStartedPlaying) return;
+        showOpenExternallyPrompt(
+          channel,
+          `"${channel.name}" está tardando demasiado en cargar (posible bloqueo de CORS o servidor lento). `
+        );
+      }, LOAD_TIMEOUT_MS);
+
       const candidates = buildCandidateUrls(channel.url);
       let candidateIndex = 0;
 
       function tryNextCandidate() {
         if (myToken !== attemptToken) return;
         if (candidateIndex >= candidates.length) {
+          clearLoadTimeout();
           showOpenExternallyPrompt(
             channel,
             `"${channel.name}" no se pudo reproducir embebido en este navegador (bloqueo de contenido inseguro o códec no soportado). `
@@ -229,6 +248,7 @@ function initTvChannels(channels) {
 
       function onPlaySuccess() {
         if (myToken !== attemptToken) return;
+        clearLoadTimeout();
         hasStartedPlaying = true;
         currentChannel = channel;
         currentNameSpan.textContent = channel.name;
