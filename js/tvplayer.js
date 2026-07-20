@@ -25,30 +25,15 @@ function initTvChannels(channels) {
     const pageIsSecure = window.location.protocol === 'https:';
 
     // Genera la lista de URLs candidatas a intentar, en orden, para un canal.
+    // (Los canales http:// ya se filtran antes de llegar acá, ver playChannel).
     function buildCandidateUrls(originalUrl) {
-      const candidates = [];
-      const isInsecure = originalUrl.startsWith('http://');
-
-      if (isInsecure && pageIsSecure) {
-        // La página es https y el stream es http: el navegador va a bloquear
-        // esto por "contenido mixto". Probamos primero la versión https del
-        // mismo servidor, que a veces funciona.
-        candidates.push({
-          url: 'https://' + originalUrl.slice('http://'.length),
-          upgraded: true
-        });
-      } else {
-        candidates.push({ url: originalUrl, upgraded: false });
-      }
-
+      const candidates = [{ url: originalUrl }];
       if (PROXY_BASE) {
         candidates.push({
           url: PROXY_BASE + encodeURIComponent(originalUrl),
-          upgraded: false,
           proxied: true
         });
       }
-
       return candidates;
     }
 
@@ -136,6 +121,23 @@ function initTvChannels(channels) {
       let hasStartedPlaying = false;
       let mediaRecoverAttempts = 0;
       let networkRecoverAttempts = 0;
+
+      const isInsecureChannel = channel.url.startsWith('http://') && pageIsSecure;
+
+      if (isInsecureChannel) {
+        // Esta URL es http:// y la página es https://: el navegador SIEMPRE
+        // va a bloquear esto si lo intentamos embeber (contenido mixto), sin
+        // importar qué tan bien armado esté el código. No tiene sentido
+        // mostrar un reproductor "cargando" que nunca va a arrancar: abrimos
+        // el canal directo en una pestaña nueva, como funcionaba antes.
+        video.pause();
+        if (hls) { hls.destroy(); hls = null; }
+        video.removeAttribute('src');
+        playerWrap.hidden = true;
+        markActiveItem(null);
+        window.open(channel.url, '_blank');
+        return;
+      }
 
       video.pause();
       if (hls) { hls.destroy(); hls = null; }
