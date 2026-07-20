@@ -2,6 +2,8 @@
 // El renderizado y la reproducción embebida están en js/tvplayer.js (initTvChannels).
 
 const deportesChannels = [
+  { id: 'dsports1',    name: 'DSports1',           emoji: '⚽', url: 'https://streamvidex.qzz.io/videx/dsportsar/index.m3u8' },
+  { id: 'dsportsplus', name: 'DSports+',           emoji: '🏆', url: 'https://streamvidex.qzz.io/videx/dsportsplus/index.m3u8' },
   { id: 'espn',        name: 'ESPN',               emoji: '⚽', url: 'http://190.108.83.69:8000/play/a08t/index.m3u8' },
   { id: 'espn1',       name: 'ESPN1',              emoji: '⚽', url: 'http://190.108.83.69:8000/play/a03s/index.m3u8' },
   { id: 'espn2',       name: 'ESPN2',              emoji: '⚽', url: 'http://190.108.83.69:8000/play/a0an/index.m3u8' },
